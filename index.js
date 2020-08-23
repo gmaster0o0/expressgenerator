@@ -1,8 +1,14 @@
 const { generateBasicSkeleton } = require('./generators/basicGenerators');
 const { generateBasicRouter } = require('./generators/routerGenerators');
-const { generateBasicController } = require('./generators/controllerGenerators');
+const { generateBasicModel } = require('./generators/modelGenerator');
+const { generateBasicController, addControllerToRouter } = require('./generators/controllerGenerators');
 
-generateBasicSkeleton();
+const generateBasicServer = async () => {
+  await generateBasicSkeleton();
+  await generateBasicRouter('Test');
+  await generateBasicController('Test');
+  await addControllerToRouter('Test');
+  await generateBasicModel('Test');
+};
 
-generateBasicRouter('test').catch((error) => console.error(error));
-generateBasicController('test').catch((error) => console.error(error));
+generateBasicServer().catch((error) => console.error(error));
