@@ -1,9 +1,10 @@
+#!/usr/bin/env node
 const { Command } = require('commander');
 
 const program = new Command();
 
 const packageInfo = require('./package.json');
-const api = require('./api');
+const api = require('./index');
 
 program.version(packageInfo.version);
 
