@@ -2,11 +2,12 @@ const fs = require('fs');
 const colors = require('colors');
 const readline = require('readline');
 
-const { replaceTemplateVariable, createDestinationIfNotExist } = require('../utils/generatorUtils');
+const { replaceTemplateVariable, getDestination } = require('../utils/generatorUtils');
+const { basicStyle } = require('../config/styles');
 
-const generateBasicController = async (name, output = './output/app/controllers') => {
+const generateBasicController = async (name, output = './output') => {
   try {
-    const dest = createDestinationIfNotExist(output, name, 'controller');
+    const dest = getDestination(basicStyle, output, name, 'controller');
 
     let result = await fs.promises.readFile('./templates/controllers/basic.js', 'utf8');
     result = replaceTemplateVariable(result, 'MODELNAME', name);
@@ -14,7 +15,7 @@ const generateBasicController = async (name, output = './output/app/controllers'
     result = replaceTemplateVariable(result, 'MODELPATH', `../models/${name.toLowerCase()}.model`);
 
     await fs.promises.writeFile(dest, result);
-    console.log(`${colors.green('GENERATE ')} ${output}`);
+    console.log(`${colors.green('GENERATE ')} ${dest}`);
   } catch (error) {
     console.log(error);
   }
@@ -32,10 +33,11 @@ const writeLinesToFile = (lines, file) => {
   });
   fileStream.end();
 };
-const addControllerToRouter = async (name) => {
+
+const addControllerToRouter = async (name, output = './output') => {
   try {
     const lines = [];
-    const routerFile = `./output/app/routers/${name.toLowerCase()}.router.js`;
+    const routerFile = getDestination(basicStyle, output, name, 'router');
     const lineReader = readline.createInterface({
       input: fs.createReadStream(routerFile),
     });

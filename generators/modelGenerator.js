@@ -1,8 +1,8 @@
 const fs = require('fs');
 const colors = require('colors');
 
-const { replaceTemplateVariable, createDestinationIfNotExist } = require('../utils/generatorUtils');
-
+const { replaceTemplateVariable, getDestination } = require('../utils/generatorUtils');
+const { basicStyle } = require('../config/styles');
 const mongooseTemplate = require('../templates/models/mongoose');
 
 const getTemplate = (type) => {
@@ -18,7 +18,7 @@ const generateBasicModel = async (
   timestamp = true
 ) => {
   try {
-    const dest = createDestinationIfNotExist(output, name, 'model');
+    const dest = getDestination(basicStyle, output, name, 'model');
 
     const template = getTemplate(databaseType);
 
@@ -36,7 +36,7 @@ const generateBasicModel = async (
     content = replaceTemplateVariable(content, 'BODY', template.schemaBody);
 
     await fs.promises.writeFile(dest, content);
-    console.log(`${colors.green('GENERATE ')} ${output}`);
+    console.log(`${colors.green('GENERATE ')} ${dest}`);
   } catch (error) {
     console.log(error);
   }

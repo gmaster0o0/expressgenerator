@@ -5,10 +5,10 @@ const { generateBasicController, addControllerToRouter } = require('./generators
 
 const generateBasicServer = async () => {
   await generateBasicSkeleton();
-  await generateBasicRouter('Test');
-  await generateBasicController('Test');
-  await addControllerToRouter('Test');
-  await generateBasicModel('Test');
+  await generateBasicRouter('Dummy');
+  await generateBasicController('Dummy');
+  await addControllerToRouter('Dummy');
+  await generateBasicModel('Dummy');
 };
 
 generateBasicServer().catch((error) => console.error(error));
