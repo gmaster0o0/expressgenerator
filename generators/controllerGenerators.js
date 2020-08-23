@@ -3,11 +3,10 @@ const colors = require('colors');
 const readline = require('readline');
 
 const { replaceTemplateVariable, getDestination } = require('../utils/generatorUtils');
-const { basicStyle } = require('../config/styles');
 
-const generateBasicController = async (name, output = './output') => {
+const generateBasicController = async (name, output = './output', config) => {
   try {
-    const dest = getDestination(basicStyle, output, name, 'controller');
+    const dest = getDestination(config, output, name, 'controller');
 
     let result = await fs.promises.readFile('./templates/controllers/basic.js', 'utf8');
     result = replaceTemplateVariable(result, 'MODELNAME', name);
@@ -34,10 +33,10 @@ const writeLinesToFile = (lines, file) => {
   fileStream.end();
 };
 
-const addControllerToRouter = async (name, output = './output') => {
+const connectControllerToRouter = async (name, output = './output', config) => {
   try {
     const lines = [];
-    const routerFile = getDestination(basicStyle, output, name, 'router');
+    const routerFile = getDestination(config, output, name, 'router');
     const lineReader = readline.createInterface({
       input: fs.createReadStream(routerFile),
     });
@@ -60,4 +59,14 @@ const addControllerToRouter = async (name, output = './output') => {
   }
 };
 
-module.exports = { generateBasicController, addControllerToRouter };
+const ControllerGenerator = (config, output = './output') => {
+  const generateController = async (name) => await generateBasicController(name, output, config);
+  const addControllerToRouter = async (name) => await connectControllerToRouter(name, output, config);
+
+  return {
+    generateController,
+    addControllerToRouter,
+  };
+};
+
+module.exports = { ControllerGenerator };

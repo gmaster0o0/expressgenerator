@@ -2,7 +2,6 @@ const fs = require('fs');
 const colors = require('colors');
 
 const { replaceTemplateVariable, getDestination } = require('../utils/generatorUtils');
-const { basicStyle } = require('../config/styles');
 const mongooseTemplate = require('../templates/models/mongoose');
 
 const getTemplate = (type) => {
@@ -11,14 +10,9 @@ const getTemplate = (type) => {
   }
 };
 
-const generateBasicModel = async (
-  name,
-  output = './output/app/models',
-  databaseType = 'mongoose',
-  timestamp = true
-) => {
+const generateBasicModel = async (name, output, config, databaseType, timestamp) => {
   try {
-    const dest = getDestination(basicStyle, output, name, 'model');
+    const dest = getDestination(config, output, name, 'model');
 
     const template = getTemplate(databaseType);
 
@@ -42,4 +36,13 @@ const generateBasicModel = async (
   }
 };
 
-module.exports = { generateBasicModel };
+const ModelGenerator = (config, output = './output') => {
+  const generateModel = async (name, databaseType = 'mongoose', timestamp = true) =>
+    await generateBasicModel(name, output, config, databaseType, timestamp);
+
+  return {
+    generateModel,
+  };
+};
+
+module.exports = { ModelGenerator };

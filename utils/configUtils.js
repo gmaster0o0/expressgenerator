@@ -6,4 +6,5 @@ const resolveConfig = (config, field, value) => {
   return config;
 };
 
-module.exports = { resolveConfig };
+const resolvePath = (path, name, field) => path.replace(new RegExp(`\\$${field}`), name);
+module.exports = { resolveConfig, resolvePath };

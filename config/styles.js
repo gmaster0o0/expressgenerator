@@ -10,10 +10,10 @@ const basicStyle = {
 };
 
 const componentStyle = {
-  modelPath: '$output/app/$component',
-  controllerPath: '$output/app/$component',
-  routerPath: '$output/app/$component',
-  testPath: '$output/app/$component',
+  modelPath: '$output/app/$model',
+  controllerPath: '$output/app/$controller',
+  routerPath: '$output/app/$router',
+  testPath: '$output/app/$test',
   modelNameStyle: '$model.model.js',
   controllerNameStyle: '$controller.controller.js',
   routerNameStyle: '$router.router.js',

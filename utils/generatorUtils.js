@@ -1,6 +1,7 @@
 const fs = require('fs');
+const mkdirp = require('mkdirp');
 
-const { resolveConfig } = require('./configUtils');
+const { resolveConfig, resolvePath } = require('./configUtils');
 
 const replaceTemplateVariable = (str, tempVar, value) => {
   const regex = new RegExp(`<${tempVar}>`, 'gi');
@@ -9,13 +10,13 @@ const replaceTemplateVariable = (str, tempVar, value) => {
 
 const createDestinationIfNotExist = (output) => {
   if (!fs.existsSync(output)) {
-    fs.mkdirSync(output);
+    mkdirp.sync(output);
   }
 };
 
 const getFilePath = (config, field, value) => resolveConfig(config, 'output', value)[`${field}Path`];
 const getDestination = (config, output, name, field) => {
-  const path = getFilePath(config, field, output);
+  const path = resolvePath(getFilePath(config, field, output), name, field);
   createDestinationIfNotExist(path, name, field);
   const fileName = resolveConfig(config, field, name.toLowerCase())[`${field}NameStyle`];
   return `${path}/${fileName}`;
