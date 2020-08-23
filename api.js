@@ -34,7 +34,7 @@ const generateComponentStyleServer = async (output = './output') => {
   await modelGenerator.generateModel('Dummy');
 };
 
-const generateComponent = async (name, output = './output') => {
+const generateComponent = async (name, output = './output', skipTest = false) => {
   createDestinationIfNotExist(output);
   const routerGenerator = RouterGenerator(config.componentStyle, output);
   const modelGenerator = ModelGenerator(config.componentStyle, output);
@@ -45,7 +45,9 @@ const generateComponent = async (name, output = './output') => {
   await controllerGenerator.generateController(name);
   await controllerGenerator.addControllerToRouter(name);
   await modelGenerator.generateModel(name);
-  await testGenerator.generateTest(name);
+  if (!skipTest) {
+    await testGenerator.generateTest(name);
+  }
 };
 
 module.exports = { generateComponentStyleServer, generateBasicServer, generateComponent };

@@ -1,5 +1,4 @@
 const { Command } = require('commander');
-const path = require('path');
 
 const program = new Command();
 
@@ -39,8 +38,9 @@ server
 const compoment = program.command('component <name> [output]');
 compoment.alias('cmp');
 compoment.description('Generate component to the output directory');
-compoment.action((name, output = process.cwd()) =>
-  api.generateComponent(name, output).catch((error) => console.error(error))
-);
+compoment.action((name, output = process.cwd(), options) => {
+  api.generateComponent(name, output, options.notest).catch((error) => console.error(error));
+});
+compoment.option('--notest', 'Skip generating test', false);
 
 program.parse(process.argv);
