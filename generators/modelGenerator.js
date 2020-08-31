@@ -1,5 +1,7 @@
 const fs = require('fs');
 const colors = require('colors');
+const path = require('path');
+const { templateDir } = require('../config/appConfig');
 
 const { replaceTemplateVariable, getDestination } = require('../utils/generatorUtils');
 const mongooseTemplate = require('../templates/models/mongoose');

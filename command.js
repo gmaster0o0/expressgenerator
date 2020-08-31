@@ -4,11 +4,9 @@ const { Command } = require('commander');
 const program = new Command();
 
 const packageInfo = require('./package.json');
-const api = require('./index');
+const app = require('./index');
 
 program.version(packageInfo.version);
-
-console.log(process.cwd());
 
 const controller = program.command('controller <name> [output]');
 controller.description('Generate controller to the output directory');
@@ -26,21 +24,25 @@ const server = program.command('server');
 server.description('Generate server to the output directory');
 server.alias('s');
 server
-  .command('basic [output]')
+  .command('basic <name> [output]')
   .alias('b')
   .description('Generate basic style server')
-  .action((output = process.cwd()) => api.generateBasicServer(output).catch((error) => console.error(error)));
+  .action((name, output = process.cwd()) =>
+    app.generateBasicServer(name, output).catch((error) => console.error(error))
+  );
 server
   .command('component [output]')
   .description('Generate component style server')
   .alias('c')
-  .action((output = process.cwd()) => api.generateComponentStyleServer(output).catch((error) => console.error(error)));
+  .action((name, output = process.cwd()) =>
+    app.generateComponentStyleServer(name, output).catch((error) => console.error(error))
+  );
 
 const compoment = program.command('component <name> [output]');
 compoment.alias('cmp');
 compoment.description('Generate component to the output directory');
 compoment.action((name, output = process.cwd(), options) => {
-  api.generateComponent(name, output, options.notest).catch((error) => console.error(error));
+  app.generateComponent(name, output, options.notest).catch((error) => console.error(error));
 });
 compoment.option('--notest', 'Skip generating test', false);
 

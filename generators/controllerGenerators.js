@@ -1,6 +1,8 @@
 const fs = require('fs');
 const colors = require('colors');
 const readline = require('readline');
+const path = require('path');
+const { templateDir } = require('../config/appConfig');
 
 const { replaceTemplateVariable, getDestination } = require('../utils/generatorUtils');
 
@@ -8,7 +10,7 @@ const generateBasicController = async (name, output = './output', config) => {
   try {
     const dest = getDestination(config, output, name, 'controller');
 
-    let result = await fs.promises.readFile('./templates/controllers/basic.js', 'utf8');
+    let result = await fs.promises.readFile(path.resolve(templateDir, 'controllers', 'basic.js'), 'utf8');
     result = replaceTemplateVariable(result, 'MODELNAME', name);
     result = replaceTemplateVariable(result, 'FACTORYPATH', './controller.factory');
     result = replaceTemplateVariable(result, 'MODELPATH', `../models/${name.toLowerCase()}.model`);
